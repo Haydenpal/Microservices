@@ -5,20 +5,78 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Alert</title>
+    <style>
+        /* Updated CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff; /* White container background */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .trade-alert {
+            background-color: #f0f0f0; /* Light gray trade alert background */
+            border-radius: 8px; /* Rounded corners */
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .trade-alert p {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .trade-alert p:first-child {
+            font-weight: bold;
+        }
+
+        .trade-alert p:nth-child(odd) {
+            background-color: #eaeaea; /* Slightly darker background for odd rows */
+        }
+
+        .download-btn {
+            background-color: #007bff; /* Blue download button */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
 </head>
 <body>
-    <h1>Latest Trade Alerts:</h1>
-    {% for info, sentiment in messages_with_sentiments %}
-        <div>
-            <p>Position: {{ info[0] }}</p>
-            <p>Symbol: {{ info[1] }}</p>
-            <p>Entry Price: {{ info[2] }}</p>
-            <p>Sentiment: {{ sentiment }}</p>
-        </div>
-    {% endfor %}
-    <form action="/download_pdf" method="get">
-        <button type="submit">Download PDF</button>
-    </form>
+    <div class="container">
+        <h1>Latest Trade Alerts:</h1>
+        {% for info, sentiment in messages_with_sentiments %}
+            <div class="trade-alert">
+                <p>Position: {{ info[0] }}</p>
+                <p>Symbol: {{ info[1] }}</p>
+                <p>Entry Price: {{ info[2] }}</p>
+                <p>Sentiment: {{ sentiment }}</p>
+            </div>
+        {% endfor %}
+        <form action="/download_pdf" method="get">
+            <button class="download-btn" type="submit">Download PDF</button>
+        </form>
+    </div>
     <script>
         // Automatically reload the page every 1 second
         setInterval(function(){
