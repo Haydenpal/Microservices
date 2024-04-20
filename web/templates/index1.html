@@ -5,13 +5,104 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Alert</title>
+    <style>
+        /* Default light theme */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            color: #333; /* Default text color */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff; /* White container background */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .trade-alert {
+            background-color: #f0f0f0; /* Light gray trade alert background */
+            border-radius: 8px; /* Rounded corners */
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .trade-alert p {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .trade-alert p:first-child {
+            font-weight: bold;
+        }
+
+        .trade-alert p:nth-child(odd) {
+            background-color: #eaeaea; /* Slightly darker background for odd rows */
+        }
+
+        .download-btn {
+            background-color: #007bff; /* Blue download button */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Dark theme */
+        body.dark-mode {
+            background-color: #333; /* Dark background */
+            color: #fff; /* Light text color */
+        }
+
+        .trade-alert.dark-mode {
+            background-color: #444; /* Dark trade alert background */
+        }
+    </style>
 </head>
 <body>
-    <h1>Latest Trade Alert:</h1>
-    <p>{{ summarized_message }}</p>
-    <p>Sentiment: {{ sentiment }}</p>
-    <form action="/trigger" method="post">
-        <button type="submit">Trigger Alert</button>
-    </form>
+    <div class="container">
+        <h1>Marticlues AI BOT</h1> <!-- Changed title -->
+        {% for message in messages %}
+            <div class="trade-alert">
+                <p>Position: {{ message[0] }}</p>
+                <p>Symbol: {{ message[1] }}</p>
+                <p>Entry Point: {{ message[2] }}</p>
+                <p>Time Frame: {{ message[3] }}</p>
+                <p>Time: {{ message[4] }}</p>
+                <p>Leverage: {{ message[5] }}</p>
+                <p>TP1: {{ message[6] }}</p>
+                <p>TP2: {{ message[7] }}</p>
+            </div>
+        {% endfor %}
+        <form action="/download_pdf" method="get">
+            <button class="download-btn" type="submit">Download PDF</button>
+        </form>
+        <button id="theme-toggle-btn">Toggle Theme</button> <!-- Button to toggle theme -->
+    </div>
+    <script>
+        // Function to toggle between light and dark themes
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        // Event listener for theme toggle button
+        document.getElementById("theme-toggle-btn").addEventListener("click", function() {
+            toggleTheme();
+        });
+    </script>
 </body>
 </html>
