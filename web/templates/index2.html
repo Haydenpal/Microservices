@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Alert</title>
+    <style>
+        /* Default light theme styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff; /* White container background */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .trade-alert {
+            background-color: #f0f0f0; /* Light gray trade alert background */
+            border-radius: 8px; /* Rounded corners */
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Align items */
+        }
+
+        .left-info {
+            flex: 1; /* Take up available space */
+            padding-right: 10px; /* Add some space between left and right info */
+        }
+
+        .right-info {
+            flex: 1; /* Take up available space */
+            padding-left: 10px; /* Add some space between left and right info */
+        }
+
+        .trade-alert p {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .trade-alert p:first-child {
+            font-weight: bold;
+        }
+
+        .trade-alert p:nth-child(odd) {
+            background-color: #eaeaea; /* Slightly darker background for odd rows */
+        }
+
+        .download-btn {
+            background-color: #007bff; /* Blue download button */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Dark theme styles */
+        body.dark-theme {
+            background-color: #333; /* Dark background */
+            color: #fff; /* White text */
+        }
+
+        .container.dark-theme {
+            background-color: #444; /* Dark container background */
+        }
+
+        .trade-alert.dark-theme {
+            background-color: #555; /* Dark trade alert background */
+        }
+
+        .trade-alert.dark-theme p {
+            color: #fff; /* White text in dark theme */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Latest Trade Alerts:</h1>
+        {% for info, sentiment in messages_with_sentiments %}
+            <div class="trade-alert">
+                <div class="left-info">
+                    <p>Position: {{ info[0] }}</p>
+                    <p>Symbol: {{ info[1] }}</p>
+                    <p>Entry Price: {{ info[2] }}</p>
+                    <p>Time Frame: {{ info[3] }}</p>
+                    <p>Time: {{ info[4] }}</p>
+                </div>
+                <div class="right-info">
+                    <p>Leverage: {{ info[5] }}</p>
+                    <p>TP1: {{ info[6] }}</p>
+                    <p>TP2: {{ info[7] }}</p>
+                    <p>Sentiment: {{ sentiment }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        <form action="/download_pdf" method="get">
+            <button class="download-btn" type="submit">Download PDF</button>
+        </form>
+        <button id="theme-toggle-btn">Toggle Theme</button>
+    </div>
+    <script>
+        // Theme toggle functionality
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            document.querySelectorAll('.container, .trade-alert').forEach(element => {
+                element.classList.toggle('dark-theme');
+            });
+        });
+
+        // Automatically reload the page every 1 second
+        setInterval(() => {
+            window.location.reload(true);
+        }, 1000);
+    </script>
+</body>
+</html>
