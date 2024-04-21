@@ -27,7 +27,7 @@ def send_telegram_message(message):
 
 def forward_to_web_page_service(message):
     # URL of the Web Page Service
-    WEB_PAGE_SERVICE_URL = 'http://18.215.248.144:8000/update_message'
+    WEB_PAGE_SERVICE_URL = 'http://20.198.10.178:8000/update_message'
     requests.post(WEB_PAGE_SERVICE_URL, data=message)
 
 if __name__ == '__main__':
