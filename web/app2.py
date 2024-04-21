@@ -54,15 +54,18 @@ def download_pdf():
     # Write the latest messages and their sentiments to the PDF
     y_position = 750
     for message, sentiment in zip(latest_alert_messages, latest_sentiments):
-        entry_point, symbol, time_frame, time, leverage, tp1, tp2 = extract_info(message)
-        c.drawString(50, y_position, f"Entry Point: {entry_point}")
+        position, symbol, entry_price, volume, time_frame, time, leverage, tp1, tp2, tp3 = extract_info(message)
+        c.drawString(50, y_position, f"Position: {position}")  # Add Position information
         c.drawString(50, y_position - 20, f"Symbol: {symbol}")
-        c.drawString(50, y_position - 40, f"Time Frame: {time_frame}")
-        c.drawString(50, y_position - 60, f"Time: {time}")
-        c.drawString(50, y_position - 80, f"Leverage: {leverage}")
-        c.drawString(50, y_position - 100, f"TP1: {tp1}")
-        c.drawString(50, y_position - 120, f"TP2: {tp2}")
-        y_position -= 140
+        c.drawString(50, y_position - 40, f"Entry Price: {entry_price}")
+        c.drawString(50, y_position - 60, f"Volume: {volume}")
+        c.drawString(50, y_position - 80, f"Time Frame: {time_frame}")
+        c.drawString(50, y_position - 100, f"Time: {time}")
+        c.drawString(50, y_position - 120, f"Leverage: {leverage}")
+        c.drawString(50, y_position - 140, f"TP1: {tp1}")
+        c.drawString(50, y_position - 160, f"TP2: {tp2}")
+        c.drawString(50, y_position - 180, f"TP3: {tp3}")
+        y_position -= 200  # Adjust the decrement value for the new line
 
     c.save()
 
@@ -74,21 +77,26 @@ def download_pdf():
     return response
 
 def extract_info(text):
-    entry_point = None
+    position = None
     symbol = None
+    entry_price = None
+    volume = None
     time_frame = None
     time = None
     leverage = None
     tp1 = None
     tp2 = None
+    tp3 = None
     lines = text.split('\n')
     for line in lines:
         if 'position' in line.lower():
-            entry_point = line.split(':')[1].strip()
+            position = line.split(':')[1].strip()
         elif 'symbol' in line.lower():
             symbol = line.split(':')[1].strip()
         elif 'entry price' in line.lower():
-            entry_point = line.split(':')[1].strip()
+            entry_price = line.split(':')[1].strip()
+        elif 'volume' in line.lower():
+            volume = line.split(':')[1].strip()
         elif 'time frame' in line.lower():
             time_frame = line.split(':')[1].strip()
         elif 'time' in line.lower():
@@ -99,7 +107,9 @@ def extract_info(text):
             tp1 = line.split(':')[1].strip()
         elif 'tp2' in line.lower():
             tp2 = line.split(':')[1].strip()
-    return entry_point, symbol, time_frame, time, leverage, tp1, tp2
+        elif 'tp3' in line.lower():
+            tp3 = line.split(':')[1].strip()
+    return position, symbol, entry_price, volume, time_frame, time, leverage, tp1, tp2, tp3
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)
