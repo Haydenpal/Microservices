@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, make_response
-import requests
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -7,7 +6,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 app = Flask(__name__)
 
 # URL of the Telegram Service
-TELEGRAM_SERVICE_URL = 'http://3.85.134.234:8001/webhook'
+TELEGRAM_SERVICE_URL = 'http://20.198.10.178:8001/webhook'
 
 # Initialize the sentiment analyzer
 analyzer = SentimentIntensityAnalyzer()
@@ -55,7 +54,7 @@ def download_pdf():
     # Write the latest messages and their sentiments to the PDF
     y_position = 750
     for message, sentiment in zip(latest_alert_messages, latest_sentiments):
-        entry_point, symbol, _, time_frame, time, leverage, tp1, tp2 = extract_info(message)
+        entry_point, symbol, time_frame, time, leverage, tp1, tp2 = extract_info(message)
         c.drawString(50, y_position, f"Entry Point: {entry_point}")
         c.drawString(50, y_position - 20, f"Symbol: {symbol}")
         c.drawString(50, y_position - 40, f"Time Frame: {time_frame}")
@@ -88,7 +87,7 @@ def extract_info(text):
             entry_point = line.split(':')[1].strip()
         elif 'symbol' in line.lower():
             symbol = line.split(':')[1].strip()
-        elif 'entry point' in line.lower():
+        elif 'entry price' in line.lower():
             entry_point = line.split(':')[1].strip()
         elif 'time frame' in line.lower():
             time_frame = line.split(':')[1].strip()
