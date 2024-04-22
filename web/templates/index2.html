@@ -118,8 +118,8 @@
 <body>
     <button id="theme-toggle-btn">Toggle Theme</button>
     <div class="container">
-        <h1>Latest Trade Alerts:</h1>
-        {% for info, sentiment in messages_with_sentiments|reverse %}
+        <h1>Marticlues AI BOT</h1>
+        {% for info in latest_alert_messages|reverse %}
             <div class="trade-alert">
                 <div class="left-info">
                     <p>Position: {{ info[0] }}</p>
@@ -133,7 +133,6 @@
                     <p>TP1: {{ info[6] }}</p>
                     <p>TP2: {{ info[7] }}</p>
                     <p>TP3: {{ info[8] }}</p>
-                    <p>Sentiment: {{ sentiment }}</p>
                 </div>
             </div>
         {% endfor %}
