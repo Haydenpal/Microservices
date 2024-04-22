@@ -122,7 +122,7 @@
         {% for info, sentiment in messages_with_sentiments|reverse %}
             <div class="trade-alert">
                 <div class="left-info">
-                    <p style="color: {{ 'green' if info[0] == 'buy' else 'red' }}">Position: {{ info[0] }}</p>
+                    <p style="color: {{ 'green' if info[0] == 'Buy Long' else 'red' }}">Position: {{ 'Buy Long' if info[0] == 'buy' else info[0] }}</p>
                     <p>Symbol: {{ info[1] }}</p>
                     <p>Entry Price: {{ info[2] }}</p>
                     <p>Time Frame: {{ info[3] }}</p>
