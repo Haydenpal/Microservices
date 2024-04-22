@@ -118,11 +118,11 @@
 <body>
     <button id="theme-toggle-btn">Toggle Theme</button>
     <div class="container">
-        <h1>Latest Trade Alerts:</h1>
+        <h1>Marticlues AI BOT</h1>
         {% for info, sentiment in messages_with_sentiments|reverse %}
             <div class="trade-alert">
                 <div class="left-info">
-                    <p>Position: {{ info[0] }}</p>
+                    <p style="color: {{ 'green' if info[0] == 'buy' else 'red' }}">Position: {{ info[0] }}</p>
                     <p>Symbol: {{ info[1] }}</p>
                     <p>Entry Price: {{ info[2] }}</p>
                     <p>Time Frame: {{ info[3] }}</p>
