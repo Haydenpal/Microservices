@@ -128,7 +128,7 @@
                     <p>TP1: {{ message[6] }}</p>
                     <p>TP2: {{ message[7] }}</p>
                     <p>TP3: {{ message[8] }}</p>
-                    <p>⏰ Time: {{ message[9] }}</p>
+                    <p>⏰ Time: {{ format_time(message[9]) }}</p>
                 </div>
             </div>
         {% endfor %}
@@ -161,6 +161,12 @@
         // Ensure the theme toggle button stays the same until clicked again
         if (savedTheme === 'dark') {
             themeToggleBtn.textContent = 'Light Theme';
+        }
+
+        // Function to format time
+        function format_time(time) {
+            const formattedTime = new Date(time).toISOString().replace('T', ' ').split('.')[0];
+            return formattedTime;
         }
 
         // Function to refresh the page every second
