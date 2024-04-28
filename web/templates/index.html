@@ -114,21 +114,21 @@
     <button id="theme-toggle-btn">Toggle Theme</button>
     <div class="container">
         <h1>Marticlues AI BOT</h1>
-        {% for info, sentiment in messages_with_sentiments|reverse %}
+        {% for message in messages_with_info %}
             <div class="trade-alert">
                 <div class="left-info">
-                    <p class="{{ 'buy' if info[0] == 'Buy Long' else 'sell' }}">Position: {{ 'Buy Long' if info[0] == 'buy' else info[0] }}</p>
-                    <p>Symbol: {{ info[1] }}</p>
-                    <p>Entry Price: {{ info[2] }}</p>
-                    <p>Time Frame: {{ info[3] }}</p>
-                    <p>Time: {{ format_time(info[4]) }}</p>
+                    <p>⚔️ Position: {{ message[0] }}</p>
+                    <p>🔗 Leverage: {{ message[1] }}</p>
+                    <p>📈 Symbol: {{ message[2] }}</p>
+                    <p>💰 Entry Price: {{ message[3] }}</p>
+                    <p>📊 Volume: {{ message[4] }}</p>
+                    <p>🕒 Time Frame: {{ message[5] }}</p>
                 </div>
                 <div class="right-info">
-                    <p>Leverage: {{ info[5] }}</p>
-                    <p>TP1: {{ info[6] }}</p>
-                    <p>TP2: {{ info[7] }}</p>
-                    <p>TP3: {{ info[8] }}</p>
-                    <p>Sentiment: {{ sentiment }}</p>
+                    <p>TP1: {{ message[6] }}</p>
+                    <p>TP2: {{ message[7] }}</p>
+                    <p>TP3: {{ message[8] }}</p>
+                    <p>⏰ Time: {{ message[9] }}</p>
                 </div>
             </div>
         {% endfor %}
@@ -163,10 +163,10 @@
             themeToggleBtn.textContent = 'Light Theme';
         }
 
-        // Function to format time
-        function format_time(timestamp) {
-            return new Date(timestamp).toLocaleString();
-        }
+        // Function to refresh the page every second
+        setInterval(function() {
+            location.reload();
+        }, 1000);
     </script>
 </body>
 </html>
