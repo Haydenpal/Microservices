@@ -1,39 +1,3 @@
-def extract_info(text):
-    position = None
-    leverage = None
-    symbol = None
-    entry_price = None
-    volume = None
-    time_frame = None
-    tp1 = None
-    tp2 = None
-    tp3 = None
-    time = None
-    lines = text.split('\n')
-    for line in lines:
-        if 'position' in line.lower():
-            position = line.split(':')[1].strip()
-        elif 'leverage' in line.lower():
-            leverage = line.split(':')[1].strip()
-        elif 'symbol' in line.lower():
-            symbol = line.split(':')[1].strip()
-        elif 'entry price' in line.lower():
-            entry_price = line.split(':')[1].strip()
-        elif 'volume' in line.lower():
-            volume = line.split(':')[1].strip()
-        elif 'time frame' in line.lower():
-            time_frame = line.split(':')[1].strip()
-        elif 'tp1' in line.lower():
-            tp1 = line.split(':')[1].strip()
-        elif 'tp2' in line.lower():
-            tp2 = line.split(':')[1].strip()
-        elif 'tp3' in line.lower():
-            tp3 = line.split(':')[1].strip()
-        elif 'time' in line.lower():
-            time = line.split(':')[1].strip()
-    return position, leverage, symbol, entry_price, volume, time_frame, tp1, tp2, tp3, time
-
-
 from flask import Flask, request, render_template, make_response
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -97,3 +61,41 @@ def download_pdf():
     response.headers['Content-Type'] = 'application/pdf'
 
     return response
+
+def extract_info(text):
+    position = None
+    leverage = None
+    symbol = None
+    entry_price = None
+    volume = None
+    time_frame = None
+    tp1 = None
+    tp2 = None
+    tp3 = None
+    time = None
+    lines = text.split('\n')
+    for line in lines:
+        if 'position' in line.lower():
+            position = line.split(':')[1].strip()
+        elif 'leverage' in line.lower():
+            leverage = line.split(':')[1].strip()
+        elif 'symbol' in line.lower():
+            symbol = line.split(':')[1].strip()
+        elif 'entry price' in line.lower():
+            entry_price = line.split(':')[1].strip()
+        elif 'volume' in line.lower():
+            volume = line.split(':')[1].strip()
+        elif 'time frame' in line.lower():
+            time_frame = line.split(':')[1].strip()
+        elif 'tp1' in line.lower():
+            tp1 = line.split(':')[1].strip()
+        elif 'tp2' in line.lower():
+            tp2 = line.split(':')[1].strip()
+        elif 'tp3' in line.lower():
+            tp3 = line.split(':')[1].strip()
+        elif 'time' in line.lower():
+            time = line.split(':')[1].strip()
+    return position, leverage, symbol, entry_price, volume, time_frame, tp1, tp2, tp3, time
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000, debug=True)
