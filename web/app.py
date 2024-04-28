@@ -12,7 +12,9 @@ WEBHOOK_URL = 'http://20.198.10.178:8001/webhook'
 
 @app.route('/')
 def index():
-    messages_with_info = latest_alert_messages
+    messages_with_info = []
+    for message in latest_alert_messages:
+        messages_with_info.append(extract_info(message))
     return render_template('index.html', messages_with_info=messages_with_info)
 
 @app.route('/update_message', methods=['POST'])
