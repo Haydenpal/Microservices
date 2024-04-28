@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, make_response
 from io import BytesIO
 from reportlab.pdfgen import canvas
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -95,7 +96,7 @@ def extract_info(text):
             elif 'tp3' in attribute:
                 tp3 = value
             elif 'time' in attribute:
-                time = value
+                time = datetime.fromisoformat(value).strftime("%Y-%m-%d %H:%M:%S")
     return position, leverage, symbol, entry_price, volume, time_frame, tp1, tp2, tp3, time
 
 if __name__ == '__main__':
