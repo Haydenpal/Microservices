@@ -94,35 +94,15 @@
         .trade-alert.dark-theme p {
             color: #fff; /* White text in dark theme */
         }
-
-        /* Theme toggle button styles */
-        #theme-toggle-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            z-index: 1000; /* Ensure button is on top of other elements */
-        }
-
-        #theme-toggle-btn:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-        }
     </style>
 </head>
 <body>
-    <button id="theme-toggle-btn">Toggle Theme</button>
     <div class="container">
         <h1>Marticlues AI BOT</h1>
-        {% for info, sentiment in messages_with_sentiments|reverse %}
+        {% for info in messages_with_info|reverse %}
             <div class="trade-alert">
                 <div class="left-info">
-                    <p style="color: {{ 'green' if info[0] == 'Buy Long' else 'red' }}">Position: {{ 'Buy Long' if info[0] == 'buy' else info[0] }}</p>
+                    <p style="color: {{ 'green' if 'Buy Long / Buy' in info[0] else 'red' }}">Position: {{ 'Buy Long' if 'buy' in info[0] else info[0] }}</p>
                     <p>Symbol: {{ info[1] }}</p>
                     <p>Entry Price: {{ info[2] }}</p>
                     <p>Time Frame: {{ info[3] }}</p>
@@ -133,7 +113,6 @@
                     <p>TP1: {{ info[6] }}</p>
                     <p>TP2: {{ info[7] }}</p>
                     <p>TP3: {{ info[8] }}</p>
-                    <p>Sentiment: {{ sentiment }}</p>
                 </div>
             </div>
         {% endfor %}
@@ -141,37 +120,5 @@
             <button class="download-btn" type="submit">Download PDF</button>
         </form>
     </div>
-    <script>
-        // Theme toggle functionality
-        const themeToggleBtn = document.getElementById('theme-toggle-btn');
-        themeToggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            document.querySelectorAll('.container, .trade-alert').forEach(element => {
-                element.classList.toggle('dark-theme');
-            });
-            // Save the theme preference in local storage
-            const isDarkTheme = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
-        });
-
-        // Retrieve the theme preference from local storage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            document.querySelectorAll('.container, .trade-alert').forEach(element => {
-                element.classList.add('dark-theme');
-            });
-        }
-
-        // Ensure the theme toggle button stays the same until clicked again
-        if (savedTheme === 'dark') {
-            themeToggleBtn.textContent = 'Light Theme';
-        }
-
-        // Automatically reload the page every 1 second
-        setInterval(() => {
-            window.location.reload(true);
-        }, 1000);
-    </script>
 </body>
 </html>
