@@ -102,17 +102,18 @@
         {% for info in messages_with_info|reverse %}
             <div class="trade-alert">
                 <div class="left-info">
-                    <p style="color: {{ 'green' if 'Buy Long / Buy' in info[0] else 'red' }}">Position: {{ 'Buy Long' if 'buy' in info[0] else info[0] }}</p>
-                    <p>Symbol: {{ info[1] }}</p>
-                    <p>Entry Price: {{ info[2] }}</p>
-                    <p>Time Frame: {{ info[3] }}</p>
-                    <p>Time: {{ info[4] }}</p>
+                    <p>Position: {{ info[0] }}</p>
+                    <p>Leverage: {{ info[1] }}</p>
+                    <p>Symbol: {{ info[2] }}</p>
+                    <p>Entry Price: {{ info[3] }}</p>
+                    <p>Volume: {{ info[4] }}</p>
                 </div>
                 <div class="right-info">
-                    <p>Leverage: {{ info[5] }}</p>
+                    <p>Time Frame: {{ info[5] }}</p>
                     <p>TP1: {{ info[6] }}</p>
                     <p>TP2: {{ info[7] }}</p>
                     <p>TP3: {{ info[8] }}</p>
+                    <p>Time: {{ info[9] }}</p>
                 </div>
             </div>
         {% endfor %}
@@ -120,5 +121,11 @@
             <button class="download-btn" type="submit">Download PDF</button>
         </form>
     </div>
+    <script>
+        // Automatically reload the page every 1 second
+        setInterval(() => {
+            window.location.reload(true);
+        }, 1000);
+    </script>
 </body>
 </html>
