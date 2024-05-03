@@ -114,24 +114,30 @@
     <button id="theme-toggle-btn">Toggle Theme</button>
     <div class="container">
         <h1>Marticlues AI BOT</h1>
-        {% for message in messages_with_info %}
+        {% for message in messages_with_info|reverse %}
             <div class="trade-alert">
                 <div class="left-info">
-                    <p>⚔️ Position: {{ message[0] }}</p>
-                    <p>🔗 Leverage: {{ message[1] }}</p>
-                    <p>📈 Symbol: {{ message[2] }}</p>
-                    <p>💰 Entry Price: {{ message[3] }}</p>
-                    <p>📊 Volume: {{ message[4] }}</p>
-                    <p>🕒 Time Frame: {{ message[5] }}</p>
+                    {% if message[0] == "Short Selling / Sell" %}
+                        <p style="color: red;">âš”ï¸ Position: {{ message[0] }}</p>
+                    {% else %}
+                        <p style="color: green;">âš”ï¸ Position: {{ message[0] }}</p>
+                    {% endif %}
+                    <p>ðŸ”— Leverage: {{ message[1] }}</p>
+                    <p>ðŸ“ˆ Symbol: {{ message[2] }}</p>
+                    <p>ðŸ’° Entry Price: {{ message[3] }}</p>
+                    <p>ðŸ“Š Volume: {{ message[4] }}</p>
+                    <p>ðŸ•’ Time Frame: {{ message[5] }}</p>
                 </div>
                 <div class="right-info">
-                    <p>TP1: {{ message[6] }}</p>
-                    <p>TP2: {{ message[7] }}</p>
-                    <p>TP3: {{ message[8] }}</p>
-                    <p>⏰ Time: {{ format_time(message[9]) }}</p>
-                </div>
+                   <p>TP1: {{ message[6] }}</p>
+                   <p>TP2: {{ message[7] }}</p>
+                   <p>TP3: {{ message[8] }}</p>
+                   {% if message[9] %}
+                       <p>â° Time: {{ message[9] }}</p>
+                   {% endif %}
+               </div>
             </div>
-        {% endfor %}
+         {% endfor %}
         <form action="/download_pdf" method="get">
             <button class="download-btn" type="submit">Download PDF</button>
         </form>
