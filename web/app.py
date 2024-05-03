@@ -9,23 +9,24 @@ app = Flask(__name__)
 latest_alert_messages = []
 
 # Webhook URL for receiving messages
-WEBHOOK_URL = 'http://20.198.10.178:8001/webhook'
+WEBHOOK_URL = 'http://20.197.21.223:80/webhook'
 
 @app.route('/')
 def index():
     messages_with_info = []
-    for message in latest_alert_messages:
-        messages_with_info.append(extract_info(message))
+    if latest_alert_messages:
+       reversed_messages = reversed(latest_alert_messages)
+       messages_with_info = [extract_info(message) for message in reversed_messages]
     return render_template('index.html', messages_with_info=messages_with_info)
 
 @app.route('/update_message', methods=['POST'])
 def update_message():
     global latest_alert_messages
     # Add the received message to the latest_alert_messages list
-    latest_alert_messages.append(request.data.decode('utf-8').strip())
+    latest_alert_messages.insert(0, request.data.decode('utf-8').strip())
     # Trim the list to only keep the latest 5 messages
     if len(latest_alert_messages) > 5:
-        latest_alert_messages = latest_alert_messages[-5:]
+        latest_alert_messages = latest_alert_messages[:5]
     return "Message updated successfully"
 
 @app.route('/download_pdf')
@@ -38,17 +39,17 @@ def download_pdf():
     y_position = 750
     for message in latest_alert_messages:
         position, leverage, symbol, entry_price, volume, time_frame, tp1, tp2, tp3, time = extract_info(message)
-        c.drawString(50, y_position, f"⚔️ Position: {position}")
-        c.drawString(50, y_position - 20, f"🔗 Leverage: {leverage}")
-        c.drawString(50, y_position - 40, f"📈 Symbol: {symbol}")
-        c.drawString(50, y_position - 60, f"💰 Entry Price: {entry_price}")
-        c.drawString(50, y_position - 80, f"📊 Volume: {volume}")
-        c.drawString(50, y_position - 100, f"🕒 Time Frame: {time_frame}")
-        c.drawString(50, y_position - 120, f"🎯 Take Profit Targets:")
+        c.drawString(50, y_position, f"âš”ï¸ Position: {position}")
+        c.drawString(50, y_position - 20, f"ðŸ”— Leverage: {leverage}")
+        c.drawString(50, y_position - 40, f"ðŸ“ˆ Symbol: {symbol}")
+        c.drawString(50, y_position - 60, f"ðŸ’° Entry Price: {entry_price}")
+        c.drawString(50, y_position - 80, f"ðŸ“Š Volume: {volume}")
+        c.drawString(50, y_position - 100, f"ðŸ•’ Time Frame: {time_frame}")
+        c.drawString(50, y_position - 120, f"ðŸŽ¯ Take Profit Targets:")
         c.drawString(60, y_position - 140, f"TP1: {tp1}")
         c.drawString(60, y_position - 160, f"TP2: {tp2}")
         c.drawString(60, y_position - 180, f"TP3: {tp3}")
-        c.drawString(50, y_position - 200, f"⏰ Time: {time}")
+        c.drawString(50, y_position - 200, f"â° Time: {time}")
         y_position -= 240  # Adjust the decrement value for the new line
 
     c.save()
@@ -96,7 +97,8 @@ def extract_info(text):
             elif 'tp3' in attribute:
                 tp3 = value
             elif 'time' in attribute:
-                time = datetime.fromisoformat(value).strftime("%Y-%m-%d %H:%M:%S")
+                if value:
+                    time = datetime.fromisoformat(value).strftime("%Y-%m-%d %H:%M:%S")
     return position, leverage, symbol, entry_price, volume, time_frame, tp1, tp2, tp3, time
 
 if __name__ == '__main__':
