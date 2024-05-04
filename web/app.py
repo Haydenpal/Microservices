@@ -40,16 +40,16 @@ def download_pdf():
     for message in latest_alert_messages:
         position, leverage, symbol, entry_price, volume, time_frame, tp1, tp2, tp3, time = extract_info(message)
         c.drawString(50, y_position, f"âš”ï¸ Position: {position}")
-        c.drawString(50, y_position - 20, f"ðŸ”— Leverage: {leverage}")
-        c.drawString(50, y_position - 40, f"ðŸ“ˆ Symbol: {symbol}")
+        c.drawString(50, y_position - 20, f"ðŸ“ˆ Leverage: {leverage}")
+        c.drawString(50, y_position - 40, f"ðŸ“Š Symbol: {symbol}")
         c.drawString(50, y_position - 60, f"ðŸ’° Entry Price: {entry_price}")
-        c.drawString(50, y_position - 80, f"ðŸ“Š Volume: {volume}")
-        c.drawString(50, y_position - 100, f"ðŸ•’ Time Frame: {time_frame}")
-        c.drawString(50, y_position - 120, f"ðŸŽ¯ Take Profit Targets:")
-        c.drawString(60, y_position - 140, f"TP1: {tp1}")
-        c.drawString(60, y_position - 160, f"TP2: {tp2}")
-        c.drawString(60, y_position - 180, f"TP3: {tp3}")
-        c.drawString(50, y_position - 200, f"â° Time: {time}")
+        c.drawString(50, y_position - 80, f"ðŸ“‰ Volume: {volume}")
+        c.drawString(50, y_position - 100, f"â° Time Frame: {time_frame}")
+        c.drawString(50, y_position - 120, f"â³ Take Profit Targets:")
+        c.drawString(60, y_position - 140, f"TP1: ${tp1:.5f}")  # Displaying TP values with 5 decimal places
+        c.drawString(60, y_position - 160, f"TP2: ${tp2:.5f}")
+        c.drawString(60, y_position - 180, f"TP3: ${tp3:.5f}")
+        c.drawString(50, y_position - 200, f"â±ï¸ Time: {time}")
         y_position -= 240  # Adjust the decrement value for the new line
 
     c.save()
@@ -85,20 +85,33 @@ def extract_info(text):
             elif 'symbol' in attribute:
                 symbol = value
             elif 'entry price' in attribute:
-                entry_price = value
+                entry_price = value  # Preserve exact entry price without modification
             elif 'volume' in attribute:
                 volume = value
             elif 'time frame' in attribute:
                 time_frame = value
-            elif 'tp1' in attribute:
-                tp1 = value
-            elif 'tp2' in attribute:
-                tp2 = value
-            elif 'tp3' in attribute:
-                tp3 = value
             elif 'time' in attribute:
                 if value:
                     time = datetime.fromisoformat(value).strftime("%Y-%m-%d %H:%M:%S")
+
+    # Calculate take profit targets based on position and entry price
+    if position and entry_price:
+        if "buy" in position.lower():
+            entry_price_numeric = float(entry_price.replace('$', ''))  # Convert entry price to float, removing '$' if present
+            tp1 = entry_price_numeric * 1.0025  # Tp1: 0.25% above entry price
+            tp2 = entry_price_numeric * 1.005   # Tp2: 0.5% above entry price
+            tp3 = entry_price_numeric * 1.01    # Tp3: 1% above entry price
+        elif "sell" in position.lower():
+            entry_price_numeric = float(entry_price.replace('$', ''))  # Convert entry price to float, removing '$' if present
+            tp1 = entry_price_numeric * 0.9975  # Tp1: 0.25% below entry price
+            tp2 = entry_price_numeric * 0.995   # Tp2: 0.5% below entry price
+            tp3 = entry_price_numeric * 0.99    # Tp3: 1% below entry price
+
+    # Add dollar symbol to TP values
+    tp1 = f"${tp1:.5f}" if tp1 is not None else None
+    tp2 = f"${tp2:.5f}" if tp2 is not None else None
+    tp3 = f"${tp3:.5f}" if tp3 is not None else None
+
     return position, leverage, symbol, entry_price, volume, time_frame, tp1, tp2, tp3, time
 
 if __name__ == '__main__':
