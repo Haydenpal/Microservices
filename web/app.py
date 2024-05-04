@@ -46,9 +46,12 @@ def download_pdf():
         c.drawString(50, y_position - 80, f"ðŸ“‰ Volume: {volume}")
         c.drawString(50, y_position - 100, f"â° Time Frame: {time_frame}")
         c.drawString(50, y_position - 120, f"â³ Take Profit Targets:")
-        c.drawString(60, y_position - 140, f"TP1: ${tp1:.5f}")  # Displaying TP values with 5 decimal places
-        c.drawString(60, y_position - 160, f"TP2: ${tp2:.5f}")
-        c.drawString(60, y_position - 180, f"TP3: ${tp3:.5f}")
+        if tp1 is not None:
+            c.drawString(60, y_position - 140, f"TP1: {tp1}")  # Displaying TP values with dollar symbol
+        if tp2 is not None:
+            c.drawString(60, y_position - 160, f"TP2: {tp2}")
+        if tp3 is not None:
+            c.drawString(60, y_position - 180, f"TP3: {tp3}")
         c.drawString(50, y_position - 200, f"â±ï¸ Time: {time}")
         y_position -= 240  # Adjust the decrement value for the new line
 
@@ -107,7 +110,7 @@ def extract_info(text):
             tp2 = entry_price_numeric * 0.995   # Tp2: 0.5% below entry price
             tp3 = entry_price_numeric * 0.99    # Tp3: 1% below entry price
 
-    # Add dollar symbol to TP values
+    # Format TP values with dollar symbol ('$')
     tp1 = f"${tp1:.5f}" if tp1 is not None else None
     tp2 = f"${tp2:.5f}" if tp2 is not None else None
     tp3 = f"${tp3:.5f}" if tp3 is not None else None
