@@ -11,19 +11,23 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      # Step 1: Set up SSH using the private key (for SSH host verification)
-      - name: Set Up SSH
+      - name: Set Up SSH using the private key (for SSH host verification)
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
           chmod 600 ssh_key
           eval "$(ssh-agent -s)"
           ssh-add ssh_key
 
-      # Step 2: Log in and create a new directory using password-based authentication
+      - name: Debug environment variables
+        run: |
+          echo "Password is: ${{ secrets.AZURE_VM_PASSWORD }}"
+          echo "Username: ${{ secrets.AZURE_VM_USERNAME }}"
+          echo "IP: ${{ secrets.AZURE_VM_IP }}"
+
       - name: Create Directory on Azure VM using Password
         env:
-          SSH_PASSWORD: ${{ secrets.AZURE_VM_PASSWORD }}  # Provide password as a secret
+          SSH_PASSWORD: ${{ secrets.AZURE_VM_PASSWORD }}
         run: |
-          sshpass -p "$SSH_PASSWORD" ssh -p 2022 -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-          mkdir -p ~/hayden  # Creates a directory named 'hayden' in the user's home directory
+          sshpass -p "$SSH_PASSWORD" ssh -p 2022 -o StrictHostKeyChecking=no -T ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+          mkdir -p ~/hayden
           EOF
