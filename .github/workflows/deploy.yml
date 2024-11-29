@@ -1,9 +1,6 @@
 name: Create Directory on Azure VM
 
 on:
-  push:
-    branches:
-      - Development-Testing
   workflow_dispatch: # Enable manual trigger
 
 jobs:
