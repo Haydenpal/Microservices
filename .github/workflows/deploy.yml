@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - Development-Testing
+  workflow_dispatch: # Enable manual trigger
 
 jobs:
   deploy:
@@ -22,5 +23,5 @@ jobs:
       - name: Create Directory on Azure VM
         run: |
           ssh -p 2022 -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-          mkdir -p hayden  # Replace with your desired directory path
+          mkdir -p ~/hayden  # Creates a directory named 'hayden' in the user's home directory
           EOF
