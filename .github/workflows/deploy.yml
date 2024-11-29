@@ -1,0 +1,26 @@
+name: Create Directory on Azure VM
+
+on:
+  push:
+    branches:
+      - Development-Testing
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+
+    steps:
+      # Step 1: Set up SSH using the private key
+      - name: Set Up SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key
+          chmod 600 ssh_key
+          eval "$(ssh-agent -s)"
+          ssh-add ssh_key
+
+      # Step 2: Log in and create a new directory
+      - name: Create Directory on Azure VM
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+          mkdir -p hayden  # Replace with your desired directory path
+          EOF
