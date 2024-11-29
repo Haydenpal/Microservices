@@ -21,6 +21,6 @@ jobs:
       # Step 2: Log in and create a new directory
       - name: Create Directory on Azure VM
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+          ssh -p 2022 -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
           mkdir -p hayden  # Replace with your desired directory path
           EOF
