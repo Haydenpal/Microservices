@@ -1,4 +1,4 @@
-name: Create Directory on Azure VM
+name: Create Directory and Clone Repository on Azure VM
 
 on:
   workflow_dispatch: # Enable manual trigger
@@ -21,10 +21,12 @@ jobs:
           echo "Username: ${{ secrets.AZURE_VM_USERNAME }}"
           echo "IP: ${{ secrets.AZURE_VM_IP }}"
 
-      - name: Create Directory on Azure VM using Password
+      - name: Create Directory and Clone Repository
         env:
           SSH_PASSWORD: ${{ secrets.AZURE_VM_PASSWORD }}
         run: |
           sshpass -p "$SSH_PASSWORD" ssh -p 2022 -o StrictHostKeyChecking=no -T ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
           mkdir -p ~/hayden
+          cd ~/hayden
+          git clone https://github.com/Haydenpal/Microservices.git
           EOF
